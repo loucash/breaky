@@ -240,6 +240,9 @@ handle_info({initialize, _Sup, _Spec}, _Other, State) ->
 %% The process stopped normally, no state change.
 handle_info({'DOWN', Ref, process, _Pid, normal}, StateName, #state{ref=Ref}=State) ->
     {next_state, StateName, State#state{pid=undefined, ref=undefined}};
+%% The process stopped normally, no state change.
+handle_info({'DOWN', Ref, process, _Pid, shutdown}, StateName, #state{ref=Ref}=State) ->
+    {next_state, StateName, State#state{pid=undefined, ref=undefined}};
 % Failure.... restart? or move to off state?
 % The process crashed... now what?
 handle_info({'DOWN', Ref, process, _Pid, Reason}, on, #state{ref=Ref, remainder_fails=R}=State) ->
